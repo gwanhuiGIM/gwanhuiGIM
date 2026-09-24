@@ -35,13 +35,12 @@
 **판단(LLM)과 안전(상태머신)의 제어 권한을 하나로 모으고, 구동 중 장애물이 경로를 막으면 멈춘 뒤 새 경로로 이어 가게 했습니다**
 
 Doosan M0609 + RG2 그리퍼 + RealSense D435i · 5인 팀 · ROKEY 4차 (26.07.30~26.08.12)
-**본인 담당:** 판단 계층·안전 계층 통합, 구동 중 정지 후 재계획 연결
-**팀원들과 함께:** 인지 실패 감지 게이트
+**본인 담당:** 판단 계층·안전 계층 통합, 구동 중 정지 후 재계획 연결, 인지 실패 감지 게이트(팀 모션 코드 위에 제안·구현)
 
 - **개요:** "사과 바구니에 담아줘" 같은 자연어 지시를 LLM(대규모 언어모델)이 해석하면, 협동로봇이 물체를 인식해 집어 옮기는 시스템입니다.
 - **이 프로젝트의 위치:** ERP42에서 시작한 ROS2 경험이 부트캠프 앞선 3개 ROS2 프로젝트를 거쳐, 판단·인식·모션·안전의 여러 로봇 시스템을 하나로 통합하는 단계까지 깊어진 마지막 프로젝트입니다.
 - **문제 ① 제어 주체가 둘:** 판단 LLM 계층과 안전 계층(pick FSM(Finite State Machine) — 로봇의 상태를 단계별로 구분해 모니터링하고, 중단 시 해당 단계부터 다시 수행할 수 있도록 설계한 상태머신)이 각자 로봇에 명령을 보낼 수 있는 구조였습니다. 저는 로봇 제어 권한을 안전 계층 하나로 좁히고, 판단 계층은 "무엇을 어디로" 옮길지만 넘기도록 통합했습니다.
-- **문제 ② 에러 없는 실패 (팀원들과 함께):** 장애물 인식 모듈이 멈춰도 경로 계획은 "장애물 없는 세상" 기준으로 정상 성공했습니다. 팀원들과 함께 원인 후보를 ① 인식 서비스 미기동 ② 설정 오류 ③ 최신 장애물 반영 지연으로 나누고, 로봇을 움직이지 않은 채 계획만 1회 실행해 설정 오류 케이스를 재현했습니다. 이를 근거로 **인식 서비스가 없으면 이동을 거부하는 게이트**와, 경로를 바꿀 때마다 실제로 반영된 장애물 수를 기록하는 확인을 두 겹으로 넣었습니다. 서비스는 떠 있지만 설정이 틀린 경우는 첫 계획을 미리 실행하는 점검 모드로 드러나게 했습니다.
+- **문제 ② 에러 없는 실패:** 장애물 인식 모듈이 멈춰도 경로 계획은 "장애물 없는 세상" 기준으로 정상 성공했습니다. 저는 원인 후보를 ① 인식 서비스 미기동 ② 설정 오류 ③ 최신 장애물 반영 지연으로 나누고, 로봇을 움직이지 않은 채 계획만 1회 실행해 설정 오류 케이스를 재현했습니다. 이를 근거로 팀이 만든 모션 코드 위에 **인식 서비스가 없으면 이동을 거부하는 게이트**와, 경로를 바꿀 때마다 실제로 반영된 장애물 수를 기록하는 확인을 두 겹으로 넣었습니다. 서비스는 떠 있지만 설정이 틀린 경우는 첫 계획을 미리 실행하는 점검 모드로 드러나게 했습니다.
 - **문제 ③ 구동 중 장애물:** 로봇이 움직이는 도중 새 장애물이 경로를 막으면 멈추고, 장애물이 사라지기를 기다리지 않고 새 경로가 나오면 그 경로로 이어 가야 했습니다. 저는 이 루프를 상태머신에 중복 구현하지 않고 MoveIt(`move_group`)에 내장된 실행 중 재계획을 쓰도록 pick FSM을 연결했고, 상태머신은 재계획마저 실패했을 때의 재시도만 맡게 했습니다. 기본 플래너(OMPL) 경로에서는 정지 후 새 경로로 이어 가는 동작이 됐지만, GPU 플래너(cuMotion) 경로에서는 실행 중 장애물을 그대로 밀고 가는 것을 실기로 확인했습니다. cuMotion은 계획을 요청하는 순간에만 장애물 정보를 읽기 때문에, 실행 중 MoveIt의 감시에는 그 정보가 공유되지 않는 것이 원인이라는 가설을 세웠고, 이 문제로 실행 중 반응형 회피가 가능한 대안(RMPflow)을 검토했습니다.
 - **결과·한계:** OMPL 경로에서 구동 중 장애물이 들어왔을 때 멈춘 뒤 새 경로로 이어 가는 동작과, 출발 전 투입한 장애물을 반영한 우회를 실기로 확인했습니다. cuMotion 경로의 실행 중 회피와 전체 pick-to-place 실물 검증은 다음 단계로 남아 있습니다.
 - **회고:** "동작이 성공했다"는 신호와 "안전하게 동작했다"는 신호는 다른 층에서 따로 검증해야 한다는 것을 배웠습니다.
@@ -56,7 +55,7 @@ Doosan M0609 + RG2 그리퍼 + RealSense D435i · 5인 팀 · ROKEY 4차 (26.07.
 - **모션플래닝:** MoveIt `move_group` 실행 중 재계획(OMPL 경로, 정지 후 새 경로), nvblox ESDF(장애물 표면까지의 거리를 담은 3D 거리장) 기반 cuMotion(cuRobo) GPU 계획, RMPflow 제안 검토(설치된 cuRobo에는 없어 MPC의 ROS 래핑 가능성을 별도 검토). 실기 중 cuMotion 경로 교체 문제를 발견해 팀원의 3Hz 재계획 루프로 임의 테스트(설계·실험 단계에서 종료)
 - **안전 계층:** deterministic pick FSM이 모션 취소·그리퍼 개폐·물체 보유·충돌 씬을 전담, 판단 계층과는 JSON 3채널로만 연결
 - **기록:** 설계·실측 제약·실험 로그를 문서로 관리
-- **코드 근거:** [24개 동작 상태 pick FSM — `states.py`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/src/pick_fsm/pick_fsm/states.py#L20-L44) · [구동 중 정지 후 재계획 — `moveit_bridge.py`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/src/pick_fsm/pick_fsm/moveit_bridge.py#L218-L224) · [이동 전 ESDF 게이트(팀원들과 함께) — `arm.py`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/src/cumotion/cumotion/arm.py#L361-L372) · [실측 제약 문서 — `constraints.md`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/docs/fsm/context/constraints.md)
+- **코드 근거:** [24개 동작 상태 pick FSM — `states.py`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/src/pick_fsm/pick_fsm/states.py#L20-L44) · [구동 중 정지 후 재계획 — `moveit_bridge.py`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/src/pick_fsm/pick_fsm/moveit_bridge.py#L218-L224) · [이동 전 ESDF 게이트 — `arm.py`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/src/cumotion/cumotion/arm.py#L361-L372) · [실측 제약 문서 — `constraints.md`](https://github.com/gwanhuiGIM/Rokey_cobot2/blob/main/docs/fsm/context/constraints.md)
 
 </details>
 
