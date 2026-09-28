@@ -1,10 +1,10 @@
 # Kim KwanHee (김관희) — Robotics Portfolio
 
-> **사람들이 일상에서 쉽고 편하게 쓰는 로봇을, 실제로 끝까지 동작하게 만드는 엔지니어**
+> **사람들이 일상에서 쉽고 편하게 쓰는 로봇을 만들기 위해, 실제로 끝까지 동작하게 만드는 엔지니어**
 
 기계공학부를 졸업하고, 센서 신호가 제어 동작으로 이어지는 로봇 시스템을 만들어 왔습니다.
-아두이노 라인트레이서 → 자율주행 대회 팀장 → ROS2 협동로봇·AMR(자율이동로봇) 프로젝트의 상태관리·안전 게이트·인지-모션 통합까지 맡았습니다.
-카드마다 본인 담당과 팀 작업을 나눠 적었고, 기술 전체는 카드 아래 접힌 목록에 있습니다.
+아두이노 라인트레이서 → 자율주행 대회 팀장 → ROS2 활용 두산 협동로봇(M0609)·AMR(자율이동로봇) 프로젝트에서 상태관리·예외처리와 인지-모션 통합 등을 맡았습니다.
+카드마다 제 담당 역할을 강조하여 적었고, 기술 전체는 카드 아래 접힌 목록에 있습니다.
 
 📫 gwanhuig01@gmail.com · 🐙 [github.com/gwanhuiGIM](https://github.com/gwanhuiGIM)
 
@@ -13,7 +13,8 @@
 | 🎓 학력 | 서천고등학교(충남) 졸업 (2017~2020.02) · 충남대학교 기계공학부 학사 졸업 (2020.02~2026.08) |
 | 🤖 교육 | 두산로보틱스 ROKEY 부트캠프 8기 — 지능형 로보틱스 엔지니어 (26.02~26.08) |
 | 🏆 수상 | 교내 우수캡스톤디자인 경진대회 우수상 (24.11) · 교내 설계경진대회 우수상 (25.08) |
-| 📜 자격·어학 | SOLIDWORKS CSWP (Design Professional) · OPIc IH |
+| 📜 자격·어학 | SOLIDWORKS CSWP (Design Professional) · 1종 보통 운전면허 · OPIc IH |
+| 주요 전공과목 | 종합설계(전공 캡스톤디자인) · 재료및역학실험 · 계측공학 · |
 | 🛠️ 스킬 | `ROS·ROS2` `Python` `C++` `Ubuntu` `SolidWorks` `Arduino` `OpenCV` |
 
 ### 🧭 성장 흐름
@@ -98,7 +99,7 @@ ERP42 4륜 전기차 플랫폼 · 팀 MTP(충남대), 실개발 2~3인 · **팀�
 
 </details>
 
-🔗 개인 개발본: [Erp42_ws](https://github.com/gwanhuiGIM/Erp42_ws)
+🔗 팀 최종 코드: [Erp42_ws](https://github.com/gwanhuiGIM/Erp42_ws)
 
 ---
 
@@ -241,7 +242,7 @@ Doosan M0609 + OnRobot RG2 · 5인 팀 · ROKEY 3차 (26.07.15~26.07.29)
 | 프로젝트 | 팀 최종 제출본 | 개인 개발본 |
 |:--|:--|:--|
 | 🛟 열감지 추적 구명보트 (졸업프로젝트) | — | [Grad_proj](https://github.com/gwanhuiGIM/Grad_proj) |
-| 🚗 자율주행 ERP42 | — | [Erp42_ws](https://github.com/gwanhuiGIM/Erp42_ws) |
+| 🚗 자율주행 ERP42 | [Erp42_ws](https://github.com/gwanhuiGIM/Erp42_ws) | — |
 | 🩺 수술도구 전달 시뮬레이션 | [Rokey_cobot3](https://github.com/gwanhuiGIM/Rokey_cobot3) | [Personal_cobot3_ws](https://github.com/gwanhuiGIM/Personal_cobot3_ws) |
 | 🚨 산업안전 AMR 관제 | [Rokey_intelli1](https://github.com/gwanhuiGIM/Rokey_intelli1) | — |
 | ☕ 핸드드립 커피 자동화 | [Rokey_cobot1](https://github.com/gwanhuiGIM/Rokey_cobot1) | [Personal_cobot1_ws](https://github.com/gwanhuiGIM/Personal_cobot1_ws) |
