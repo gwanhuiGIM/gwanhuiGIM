@@ -22,7 +22,7 @@
 
 ### 📑 목차
 - 대표 프로젝트: [🦾 VLA(Vision-Language-Action) 자연어 Pick & Place](#vla) · [🚗 자율주행 ERP42](#erp42)
-- 그 외 프로젝트(진행 순): [🛟 열감지 추적 구명보트](#lifeboat) · [🩺 수술도구 전달 시뮬레이션](#surgical) · [🚨 산업안전 AMR 관제](#amr) · [☕ 핸드드립 커피 자동화](#coffee)
+- 그 외 프로젝트(진행 순): [🛟 열감지 추적 구명튜브 전달장치](#lifeboat) · [🩺 수술도구 전달 시뮬레이션(Isaac Sim)](#surgical) · [🚨 산업안전 AMR 관제(Turtlebot4)](#amr) · [☕ 핸드드립 커피 자동화 공정](#coffee)
 - [💡 What I bring](#bring) · [🗂️ 저장소 모음](#repos)
 
 <!-- ponytail: 대표작 2개는 풀 카드, 나머지는 진행 기간 순 압축 카드(사용자 지정 순서 유지). 팀 기술 전체는 <details>로 접어 첫 화면 가독성 확보. -->
@@ -33,7 +33,8 @@
 
 <a id="vla"></a>
 ### 🦾 VLA 기반 자연어 Pick & Place — 단일 GPU·실물 RG2·VLA/FSM 통합
-**GPU 한 대(8GB) 제약 속에서 인식·계획 모델의 메모리를 조정하고, 그리퍼 URDF 모델과 설치된 RG2의 차이를 실측해 적용하고, 팀원과 분업으로 개발한 VLA와 FSM의 제어 권한을 하나로 모았습니다**
+**마트 계산대에서 사람과 협업해, 물체마다 그리퍼 파지 자세를 스스로 찾아 집어 옮기는 빈 피킹(Pick & Place) 협동로봇 시스템을 만들고자 하였습니다.**<br>
+이 과정에서 GPU 한 대(8GB) 제약 속에서 인식·계획 모델의 메모리를 조정하고, 그리퍼 URDF 모델과 설치된 RG2의 차이를 실측해 적용하고, 팀원과 분업으로 개발한 VLA와 FSM의 제어 권한을 하나로 모았습니다.
 
 ▶️ [1분 시연 영상](https://youtu.be/bOec0yE8m94)
 
@@ -78,13 +79,14 @@ Doosan M0609 + RG2 그리퍼 + RealSense D435i + NVIDIA RTX 4060 Laptop(8GB) · 
 
 <a id="erp42"></a>
 ### 🚗 자율주행 ERP42 — 2025 대학생 창작 모빌리티 경진대회 (무인모빌리티 부문)
-**인지 일부가 빠져도 멈추지 않는 측위·경로추종 기반을 팀원들과 만들고, 팀장으로 실차 대회를 완주했습니다**
+**실제 주행시험장에서 달리는 자율주행 인지·판단·제어 노드를 설계해, 경진대회 무인모빌리티 부문에 팀장으로 출전하였습니다.**<br>
+수행 미션은 도로 경로 Navigation·장애물 우회·신호등 인식·돌발 장애물 정지 등이고, 팀원들과 함께 센서를 EKF로 융합해 측위를 구성했습니다. 특히 GPS 오차가 커지는 터널, drift하는 IMU처럼 인지 일부가 빠지는 상황에서도 멈추지 않는 측위·경로추종 기반을 만들어 실차 대회를 완주했습니다.
 
 ERP42 4륜 전기차 플랫폼 · 팀 MTP(충남대), 실개발 2\~3인 · **팀장** (24.08\~25.11)
 **본인 담당:** 팀장(개발 일정 수립·공유, 실습 환경 구성, 인수인계 문서화) · waypoint 경로추종 · 명령 중재 판단 노드
 **팀원들과 함께:** 센서 bring-up, EKF 센서퓨전 측위, 실차 테스트·튜닝
 
-- **개요:** 예선 10분·본선 15분 단일 주행으로 차선 유지·GPS 음영구간·교차로·주차 미션을 통과하는 대회
+- **개요:** 예선 10분·본선 15분 단일 주행으로 도로 경로 Navigation·장애물 우회·신호등 인식·돌발 장애물 정지 미션을 통과하는 기록을 경쟁하는 대회
 - **센서 → 측위 (팀원들과 함께):** LiDAR(VLP-16)·카메라·IMU·RTK-GPS bring-up → 휠 오도메트리를 IMU·GPS와 EKF로 융합해 120m 안팎 GPS 음영구간 대응
 - **경로추종 (본인):** Pure Pursuit·Stanley 검토 → heading error 비례 조향 + 직전 스텝과의 저역통과 blending으로 곡선 조향 튐 억제
 - **명령 중재 (본인):** 인지 모듈마다 제각각 내는 명령을 통제할 지점이 없음 → 차선/경로 채널을 우선순위·유효시간으로 중재, 유효 입력이 없으면 full-brake하는 판단 노드 prototype
@@ -113,19 +115,19 @@ ERP42 4륜 전기차 플랫폼 · 팀 MTP(충남대), 실개발 2\~3인 · **팀
 ## 🧩 그 외 프로젝트 (진행 순)
 
 <a id="lifeboat"></a>
-### 🛟 열감지 추적 구명보트 전달장치 및 발사장치 — 학사 졸업프로젝트
-**비싼 구조장비 대신, 제약 안에서 꼭 필요한 기능부터 골라 1/10 비용으로 만들었습니다**
+### 🛟 열감지 추적 구명튜브 전달장치 및 발사장치 — 학사 졸업프로젝트
+**비싼 구조장비 대신, 제약 안에서 꼭 필요한 기능부터 골라 1/10 비용으로, 누구나 쓸 수 있는 구명튜브 전달장치를 만들고자 하였습니다**
 
 Arduino Uno · 3인 팀 · 충남대 기계공학부 캡스톤디자인 (24.08~25.08) · 심화종합설계 PM
 **본인 담당:** 좌우 DC 모터 차동 제어 · 아두이노 회로 구성 · 설계보고서 문서화
 **팀원들과 함께:** 열화상 센서 처리, 센서·RC·모터 코드 통합, 보트 형상 설계
 
-- **개요:** 비싸고(500만~700만 원대) 조작이 어려운 상용 구조장비 대신, 익수자에게 스스로 다가가 구명튜브를 전달하는 휴대형 구조 보트
+- **개요:** 비싸고(500만~700만 원대) 조작이 어려운 상용 구조장비 대신, 익수자에게 스스로 다가가 구명튜브를 전달하는 휴대형 전달장치
 - **차동 조향 (본인):** 착수 충격에 방향키 파손 위험·고성능 모터 제어 난이도 → 좌우 DC 모터 PWM 차동 제어로 조향
 - **열원 추적 (팀원들과 함께):** 8비트 보드에서 8×8 열화상(AMG8833) 64값 처리가 부담 → 열별 최고 온도만 남겨 8칸으로 줄이고 가장 뜨거운 열 방향으로 조향
 - **결과:** 제작비 약 51만 원(상용 대비 약 1/10), 교내 산학연 캡스톤디자인 아이디어 최우수상(24.11)·졸업작품 경진대회 장려상(25.09). 폐회로 제어 전환은 다음 과제
 
-<!-- <p align="center"><img src="./images/lifeboat.jpg" alt="구명보트와 발사장치" width="600"></p> -->
+<!-- <p align="center"><img src="./images/lifeboat.jpg" alt="구명튜브와 발사장치" width="600"></p> -->
 
 <details>
 <summary><b>프로젝트 기술 전체</b></summary>
@@ -142,7 +144,8 @@ Arduino Uno · 3인 팀 · 충남대 기계공학부 캡스톤디자인 (24.08~2
 
 <a id="surgical"></a>
 ### 🩺 VLA 기반 수술도구 집도의 전달 시뮬레이션 (Isaac Sim)
-**두 로봇의 상태와 수술도구 재고를 한 화면에서 보고 바로 조작하게 만들었습니다**
+**집도의의 손 동작·음성 명령으로 두 협동로봇이 수술도구를 전달하는 Isaac Sim 시뮬레이션을 구현하였습니다.**<br>
+이 과정에서 두 로봇의 작업 단계와 트레이별 수술도구 재고, 손추적 영상, 음성·명령 로그를 한 화면에서 실시간으로 확인하는 웹 대시보드를 만들었습니다.
 
 ▶️ [1분 시연 영상](https://youtu.be/EUDn9btPNTw)
 
@@ -150,7 +153,7 @@ Dual Doosan M0609 · NVIDIA Isaac Sim · 팀 프로젝트 · ROKEY 1차 (26.06.1
 **본인 담당:** 웹 대시보드 UI·상호작용
 
 - **개요:** 집도의의 손 동작·음성으로 이중 협동로봇이 수술도구 6종을 전달하는 시뮬레이션
-- **핵심 행동:** 트레이 재고·로봇 점유 상태를 SVG로 그리고, 트레이 클릭으로 pick/반납. 관련 상태가 바뀔 때만 다시 그려 화면 떨림 방지
+- **핵심 행동:** 트레이 재고·로봇 점유 상태를 SVG로 시각화, 관련 상태가 바뀔 때만 다시 그려 화면 떨림 방지
 
 <!-- <p align="center"><img src="./images/surgical-dashboard.png" alt="웹 대시보드 화면" width="720"></p> -->
 
@@ -162,7 +165,7 @@ Dual Doosan M0609 · NVIDIA Isaac Sim · 팀 프로젝트 · ROKEY 1차 (26.06.1
 - **비전:** Isaac Sim 카메라 영상에서 YOLOv8로 트레이별 도구/빈칸 인식, 로봇 보유 상태와 융합해 MISSING 판정, 도구 무작위 배치로 검증
 - **작업 관리:** 두 로봇 작업 분배(가까운 로봇 우선), 교체·반납·PICK 도중 취소·중복 요청 방지
 - **웹 대시보드:** FastAPI + WebSocket으로 손추적 영상·트레이 상태·로봇 상태·음성/명령 로그·Robot Map 실시간 표시
-- **코드 근거:** [SVG 아이콘 — `index.html`](https://github.com/gwanhuiGIM/Rokey_cobot3/blob/main/dashboard/static/index.html#L167-L186) · [트레이 클릭 pick/return](https://github.com/gwanhuiGIM/Rokey_cobot3/blob/main/dashboard/static/index.html#L263-L291) · [상태 변경 시에만 재렌더링](https://github.com/gwanhuiGIM/Rokey_cobot3/blob/main/dashboard/static/index.html#L275-L280)
+- **코드 근거:** [SVG 아이콘 — `index.html`](https://github.com/gwanhuiGIM/Rokey_cobot3/blob/main/dashboard/static/index.html#L167-L186) · [상태 변경 시에만 재렌더링](https://github.com/gwanhuiGIM/Rokey_cobot3/blob/main/dashboard/static/index.html#L275-L280)
 
 </details>
 
@@ -172,7 +175,8 @@ Dual Doosan M0609 · NVIDIA Isaac Sim · 팀 프로젝트 · ROKEY 1차 (26.06.1
 
 <a id="amr"></a>
 ### 🚨 제조업 공장 산업안전 AMR 순찰로봇 및 관제 시스템
-**에러 메시지 없이 로봇을 헛걸음시킬 수 있던 신호 흔들림을, 단계별로 쪼개 잡았습니다**
+**모사한 산업 현장을 순찰하다가, 관제 웹캠이 안전모 미착용·작업자 쓰러짐을 감지하면 출동 가능한 AMR을 보내 조치하는 시스템을 구현하였습니다.**<br>
+이 과정에서 에러 메시지 없이 로봇을 헛걸음시킬 수 있던 신호 흔들림을 단계별로 쪼개 잡았습니다.
 
 ▶️ [1분 시연 영상](https://youtu.be/-Q8ITIWgUp4)
 
@@ -206,7 +210,8 @@ AMR 2대 · 천장 웹캠 2대 · 3인 팀 · ROKEY 2차 (26.07.01~26.07.14)
 
 <a id="coffee"></a>
 ### ☕ 협동로봇 핸드드립 커피 자동화
-**카메라 없이 힘·접점 신호만으로, "잡았는지 모르는" 순간을 따로 분리해 안전하게 멈췄습니다**
+**사용자가 버튼으로 주문하면 협동로봇이 커피를 내리는 핸드드립 자동화 공정을 구현하였습니다.**<br>
+이 과정에서 카메라 없이 그리퍼와 협동로봇의 힘·접점 신호만으로 "잡았는지 모르는" 순간을 따로 분리해 안전하게 멈췄습니다.
 
 ▶️ [1분 시연 영상](https://youtu.be/17UW9-wpsBg)
 
@@ -254,7 +259,7 @@ Doosan M0609 + OnRobot RG2 · 5인 팀 · ROKEY 3차 (26.07.15~26.07.29)
 
 | 프로젝트 | 팀 최종 제출본 | 개인 개발본 |
 |:--|:--|:--|
-| 🛟 열감지 추적 구명보트 (졸업프로젝트) | — | [Grad_proj](https://github.com/gwanhuiGIM/Grad_proj) |
+| 🛟 열감지 추적 구명튜브 (졸업프로젝트) | — | [Grad_proj](https://github.com/gwanhuiGIM/Grad_proj) |
 | 🚗 자율주행 ERP42 | [Erp42_ws](https://github.com/gwanhuiGIM/Erp42_ws) | — |
 | 🩺 수술도구 전달 시뮬레이션 | [Rokey_cobot3](https://github.com/gwanhuiGIM/Rokey_cobot3) | [Personal_cobot3_ws](https://github.com/gwanhuiGIM/Personal_cobot3_ws) |
 | 🚨 산업안전 AMR 관제 | [Rokey_intelli1](https://github.com/gwanhuiGIM/Rokey_intelli1) | — |
