@@ -1,8 +1,11 @@
 HANDOFF.md
-docs/state.md
+docs/
 
 # PDF 전체 제외(팀 발표 원본·redact 결과물). 공개 PDF는 gwanhuiGIM.github.io로
 *.pdf
 
 # PDF 민감정보 제거 스크립트(로컬 전용)
 redact.py
+
+# 로컬 작업물
+images/
