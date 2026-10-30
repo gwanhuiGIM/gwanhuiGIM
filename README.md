@@ -20,4 +20,10 @@ ROS2 기반 협동로봇(Doosan M0609)·AMR·자율주행(ERP42) 프로젝트에
 
 <sub>팀 최종 제출본은 발표·제출 시점 코드이고, 개인 개발본은 프로젝트 중·후에 개인적으로 실험하고 정리한 작업본입니다(미완성 패키지 포함).</sub>
 
+## 📚 학습 / 정리
+
+| 저장소 | 내용 |
+|:--|:--|
+| [robotics-knowledge](https://github.com/gwanhuiGIM/robotics-knowledge) | 부트캠프 이후 로보틱스 지식 보완 및 개인 공부 정리 |
+
 **Skills** `Ubuntu` `ROS2` `Python` `C++` `OpenCV` `Arduino` `SolidWorks`
